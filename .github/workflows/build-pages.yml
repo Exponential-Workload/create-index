@@ -25,7 +25,9 @@ jobs:
       - name: Build
         run: npm run build
       - name: Run on current Directory
-        run: node dist/index.js build .
+        run: |
+          cp png/readme-banner.png social-card.png
+          node dist/index.js build .
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact

@@ -127,7 +127,11 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
       files += `<a href="${filesList[file]}">${file}</a>${' '.repeat(spaceCount - file.length)}${dateStr}${' '.repeat(30 - dateStr.length)}${size}
 `
     }
-    return templateHTML.replace(/%location%/gui, rel.length > 0 ? `${rel}/` : '').replace(/%files%/gui, files.trim())
+    let template = templateHTML;
+    if (existsSync(dir + '/social-card.png'))
+      template = template.replace('<!--%img%-->', `<meta name="og:image" content="social-card.png"><meta name="twitter:image" content="social-card.png"><meta name="image" content="social-card.png"><meta name="og:card" content="summary_large_image"><meta name="twitter:card" content="summary_large_image"><meta name="card" content="summary_large_image">`)
+    else template = template.replace('<!--%img%-->', '')
+    return template.replace(/%location%/gui, rel.length > 0 ? `${rel}/` : '').replace(/%files%/gui, files.trim())
   } return null
 }
 export default buildIndex
