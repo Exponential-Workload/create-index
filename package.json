@@ -4,7 +4,8 @@
   "description": "Creates dark-themed nginx-styled index pages",
   "main": "dist/lib.js",
   "scripts": {
-    "dev": "nodemon --watch src --exec \"ts-node src/index.ts serve test\"",
+    "dev:build": "nodemon --watch src --ext ts --exec \"ts-node src/index.ts build test\"",
+    "dev": "nodemon --watch src --ext ts --exec \"ts-node src/index.ts serve test\"",
     "build": "tsc"
   },
   "keywords": [

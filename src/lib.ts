@@ -97,7 +97,6 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
       })
     }
     const rel = path.relative(root, dir)
-    const invRel = path.relative(dir, root)
     let files = '';
     let spaceCount = 51;
     for (const file of Object.keys(filesList)) {
@@ -131,9 +130,9 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
     const cards = (img: string) => `<meta name="og:image" content="${img}"><meta name="twitter:image" content="${img}"><meta name="image" content="${img}"><meta name="og:card" content="summary_large_image"><meta name="twitter:card" content="summary_large_image"><meta name="card" content="summary_large_image">`
     let template = templateHTML;
     if (existsSync(dir + '/social-card.png'))
-      template = template.replace('<!--%img%-->', cards('social-card.png'))
+      template = template.replace('<!--%img%-->', cards(`/${(rel || '.').replace(/\\/gui, '/')}/social-card.png`))
     else if (existsSync(root + '/social-card.png'))
-      template = template.replace('<!--%img%-->', cards(`${invRel.replace(/\\/gui, '/')}/social-card.png`))
+      template = template.replace('<!--%img%-->', cards(`/social-card.png`))
     else template = template.replace('<!--%img%-->', '')
     return template.replace(/%location%/gui, rel.length > 0 ? `${rel}/` : '').replace(/%files%/gui, files.trim())
   } return null
