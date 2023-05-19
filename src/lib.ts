@@ -91,9 +91,11 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
       }
     } else {
       dirRead.forEach(file => {
-        const isDirectory = cachedStatSync(`${dir}/${file}`).isDirectory();
-        file = isDirectory ? `${file}/` : file;
-        filesList[file] = file;
+        if (file !== '.git' && file !== '.gitkeep') {
+          const isDirectory = cachedStatSync(`${dir}/${file}`).isDirectory();
+          file = isDirectory ? `${file}/` : file;
+          filesList[file] = file;
+        }
       })
     }
     const rel = path.relative(root, dir)
