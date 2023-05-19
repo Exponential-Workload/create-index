@@ -1,4 +1,5 @@
 {
+  "repository/": "https://github.com/Exponential-Workload/create-index",
   "src/": "src/",
   "test/": "test/",
   "dist/": "dist/",
