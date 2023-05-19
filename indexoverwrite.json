@@ -1,0 +1,9 @@
+{
+  "src/": "src/",
+  "test/": "test/",
+  "dist/": "dist/",
+  "LICENSE": "LICENSE",
+  "README.md": "README.md",
+  "package.json": "package.json",
+  "tsconfig.json": "tsconfig.json"
+}

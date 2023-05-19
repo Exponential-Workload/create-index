@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "target": "ES6",
+    "moduleResolution": "nodenext",
+    "allowSyntheticDefaultImports": true,
+    "module": "NodeNext"
+  }
+}
