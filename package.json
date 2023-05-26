@@ -1,6 +1,6 @@
 {
   "name": "@3xpo/create-index",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Creates dark-themed nginx-styled index pages",
   "main": "dist/lib.js",
   "scripts": {
