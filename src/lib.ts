@@ -104,6 +104,7 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
     for (const file of Object.keys(filesList)) {
       if (file.length + 1 > spaceCount) spaceCount = file.length + 1;
     }
+    spaceCount = Math.min(60, spaceCount);
     const padZero = (num: number) => num < 10 ? `0${num}` : `${num}`;
     for (const file of Object.keys(filesList).sort((a, b) => {
       if (isCustomFile) return 0;
@@ -126,7 +127,8 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
         } catch (error) {
           console.warn(`Failed to get size of ${dir}/${file}`, error);
         }
-      files += `<a href="${filesList[file]}">${file}</a>${' '.repeat(spaceCount - file.length)}${dateStr}${' '.repeat(30 - dateStr.length)}${size}
+      const displayFile = file.length >= spaceCount - 1 ? file.slice(0, spaceCount - 4) + '..>' : file;
+      files += `<a href="${filesList[file]}">${displayFile}</a>${' '.repeat(spaceCount - displayFile.length)}${dateStr}${' '.repeat(30 - dateStr.length)}${size}
 `
     }
     const cards = (img: string) => `<meta name="og:image" content="${img}"><meta name="twitter:image" content="${img}"><meta name="image" content="${img}"><meta name="og:card" content="summary_large_image"><meta name="twitter:card" content="summary_large_image"><meta name="card" content="summary_large_image">`
