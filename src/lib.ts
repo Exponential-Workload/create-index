@@ -55,7 +55,7 @@ export const recursiveReaddirSync = (dir: string): FilePath[] =>
     } else return new FilePath(`${dir}/${file}`, false);
   })
 
-const template = fs.readFileSync(path.join(packageRoot, 'template.html'), 'utf-8').replace(/%versioncomment%/gui, `<!--${version}-->`);
+const template = globalThis.__autoindex_template ?? fs.readFileSync(path.join(packageRoot, 'template.html'), 'utf-8').replace(/%versioncomment%/gui, `<!--${version}-->`);
 
 export const prettySize = (bytes: number) => {
   if (bytes < 1024) return `${bytes} B`;
