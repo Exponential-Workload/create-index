@@ -17,9 +17,16 @@ import express from 'express';
 import buildIndex, { cachedStatSync as statSync, clearCache, recursiveReaddirSync, version as v, version, } from './lib'
 import { networkInterfaces } from 'os'
 import process from 'process';
+// @ts-ignore
+import type { Options } from 'boxen';
 
 (async () => {
-  const boxen = (await import('boxen')).default;
+  let boxen: (text: string, options: Options) => string = (text) => text;
+  try {
+    boxen = (await import('boxen')).default
+  } catch (error) {
+    console.warn(error);
+  }
 
   const argv = yargs
     .scriptName("create-index")
