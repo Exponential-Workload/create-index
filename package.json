@@ -1,6 +1,6 @@
 {
   "name": "@3xpo/create-index",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Creates dark-themed nginx-styled index pages",
   "main": "dist/lib.js",
   "scripts": {
@@ -29,6 +29,9 @@
     "typescript": "^5.0.4"
   },
   "peerDependencies": {
+    "boxen": "^7.1.0"
+  },
+  "optionalDependencies": {
     "boxen": "^7.1.0"
   },
   "bin": "dist/index.js"
