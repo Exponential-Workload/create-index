@@ -14,6 +14,8 @@ import path, { resolve } from 'path';
 import * as json5 from 'json5';
 import sanitize from 'sanitize-html'
 
+const sizeRegex = /^(\d+(?:px|r?em|%|vh|vw))+$/
+const colorRegexes = [/^#(0x)?[0-9a-f]+$/i, /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/]
 const SanitizerOptions: sanitize.IOptions = {
   allowedTags: [
     "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
@@ -22,11 +24,30 @@ const SanitizerOptions: sanitize.IOptions = {
     "ul", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
     "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
     "small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
-    "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", "a"
+    "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", "a",
   ],
   disallowedTagsMode: 'recursiveEscape',
   allowedAttributes: {
     a: ['href', 'name', 'target'],
+  },
+  allowedStyles: {
+    '*': {
+      // Match HEX and RGB
+      'color': colorRegexes,
+      'text-align': [/^left$/, /^right$/, /^center$/],
+      // Match any number with px, em, or %
+      'font-size': [sizeRegex],
+      'font-weight': [/^[0-9]+$/],
+      'font-family': [/^(['"][a-zA-Z0-9 ]+['"],? *)+$/],
+      'margin': [sizeRegex],
+      'padding': [sizeRegex],
+      'border-color': [sizeRegex],
+      'border-size': [sizeRegex],
+      'border-radius': [sizeRegex],
+      'border-style': [/^solid$/, /^dotted$/, /^dashed$/, /^double$/, /^groove$/, /^ridge$/, /^inset$/, /^outset$/, /^none$/],
+      'opacity': [/^0(\.\d+)?$/, /^1(\.0+)?$/],
+      'background-color': colorRegexes,
+    },
   },
   // Lots of these won't come up by default because we don't allow them
   selfClosing: ['br', 'hr'],
@@ -100,11 +121,45 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
   const index = findIndexes(dir);
   if (index.length === 0) {
     const filesList: Record<string, string> = {};
-    const isReadme = dirRead.find(file => file.toLowerCase() === 'readme' || file.toLowerCase() === 'readme.txt');
-    if (isReadme && !globalThis.__autoindex_no_readme) {
-      const readme = fs.readFileSync(`${dir}/${isReadme}`, 'utf-8');
-      const readmeHTML = sanitize(readme, SanitizerOptions);
-      templateHTML = templateHTML.replace(/%README%/gu, `<pre>${readmeHTML}</pre>`);
+    const isReadme = dirRead.find(file => file.toLowerCase() === 'readme' || file.toLowerCase() === 'readme.txt' || file.toLowerCase() === 'readme.html');
+    if (isReadme && !globalThis.__autoindex_no_readme && !process.env.NO_READMES) {
+      const isHtml = isReadme.toLowerCase().endsWith('.html')
+      let readme = fs.readFileSync(`${dir}/${isReadme}`, 'utf-8');
+      let last = '';
+      while (last !== readme) {
+        last = readme;
+        readme = readme.replace(/(javascript):/gui, '$1&colon;');
+      }
+      // replace <http://link> -> <a href="http://link">http://link</a>, same for https links
+      readme = readme.replace(/<(https?:\/\/[^ >]+)>/gu, '<a href="$1">$1</a>');
+      const readmeHTML = sanitize(readme, {
+        ...SanitizerOptions,
+        allowedTags: [...SanitizerOptions.allowedTags as string[], ...(isHtml ? [
+          'pre',
+        ] : [])],
+        allowedAttributes: {
+          ...SanitizerOptions.allowedAttributes,
+          ...(isHtml ? {
+            pre: ['style'],
+            span: ['style'],
+            p: ['style'],
+            div: ['style'],
+            a: ['style', ...((SanitizerOptions.allowedAttributes || {}).a ?? [])],
+            h1: ['style'],
+            h2: ['style'],
+            h3: ['style'],
+            h4: ['style'],
+            h5: ['style'],
+            h6: ['style'],
+          } : {}),
+        },
+      });
+      templateHTML = templateHTML.replace(/%README%/gu, `${isHtml ? '' : '<pre>'}${readmeHTML}${isHtml ? '' : '</pre>'}`);
+      last = '';
+      while (last !== templateHTML) {
+        last = templateHTML;
+        templateHTML = templateHTML.replace(/(javascript):/gui, '$1&colon;');
+      }
     } else {
       templateHTML = templateHTML.replace(/%README%/gu, '');
     }
