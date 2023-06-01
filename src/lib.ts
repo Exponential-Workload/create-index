@@ -12,6 +12,32 @@
 import fs, { existsSync } from 'fs-extra';
 import path, { resolve } from 'path';
 import * as json5 from 'json5';
+import sanitize from 'sanitize-html'
+
+const SanitizerOptions: sanitize.IOptions = {
+  allowedTags: [
+    "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
+    "h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
+    "dl", "dt", "figcaption", "figure", "hr", "li", "main", "ol", "p",
+    "ul", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
+    "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
+    "small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
+    "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", "a"
+  ],
+  disallowedTagsMode: 'recursiveEscape',
+  allowedAttributes: {
+    a: ['href', 'name', 'target'],
+  },
+  // Lots of these won't come up by default because we don't allow them
+  selfClosing: ['br', 'hr'],
+  // URL schemes we permit
+  allowedSchemes: ['http', 'https'],
+  allowedSchemesByTag: {},
+  allowedSchemesAppliedToAttributes: ['href', 'src', 'cite'],
+  allowProtocolRelative: true,
+  enforceHtmlBoundary: false,
+  parseStyleAttributes: true
+}
 
 const packageRoot = resolve(__dirname, '..');
 
@@ -74,6 +100,14 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
   const index = findIndexes(dir);
   if (index.length === 0) {
     const filesList: Record<string, string> = {};
+    const isReadme = dirRead.find(file => file.toLowerCase() === 'readme' || file.toLowerCase() === 'readme.txt');
+    if (isReadme && !globalThis.__autoindex_no_readme) {
+      const readme = fs.readFileSync(`${dir}/${isReadme}`, 'utf-8');
+      const readmeHTML = sanitize(readme, SanitizerOptions);
+      templateHTML = templateHTML.replace(/%README%/gu, `<pre>${readmeHTML}</pre>`);
+    } else {
+      templateHTML = templateHTML.replace(/%README%/gu, '');
+    }
     const isIndexOverwriteJSON = existsSync(`${dir}/indexoverwrite.json`);
     const isIndexOverwriteJSON5 = existsSync(`${dir}/indexoverwrite.json5`);
     let isCustomFile = isIndexOverwriteJSON || isIndexOverwriteJSON5;
