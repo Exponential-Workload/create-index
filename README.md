@@ -39,6 +39,10 @@ If you're surprised as to why your plain text is getting formatted, that's likel
 
 When serving untrusted directories on sensitive domains, it may be worth removing `README.html`'s, `README.txt`s and `README`s (or pass the env var NO_READMES), as they're included (with XSS filtering via `sanitize-html`, may not always be sufficient) in the index.
 
+### Overwrite Dirreads
+
+Don't want all files to be listed (or, want links to anywhere else)? No problem! Just add a `indexoverwrite.json` (`indexoverwrite.json5` also works) file to the directory, structured similarly to [this](https://github.com/Exponential-Workload/create-index/blob/master/indexoverwrite.json), or [this](https://github.com/Exponential-Workload/create-index/blob/master/test/a/indexoverwrite.json5), or even [this](https://github.com/Exponential-Workload/create-index/blob/master/test/a/d/indexoverwrite.json5)
+
 ### Serve
 
 Want to serve a static directory instead of generating index files? No problem! Use `pnpm create @3xpo/index serve [dir=.]` to serve a directory instead of generating index files.
