@@ -1,6 +1,6 @@
 {
   "repository/": "https://github.com/Exponential-Workload/create-index",
-  "npm/": "https://npm.im/@3xpo/index",
+  "npm/": "https://npm.im/@3xpo/create-index",
   "src/": "src/",
   "test/": "test/",
   "dist/": "dist/",
