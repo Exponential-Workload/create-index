@@ -1,12 +1,13 @@
 {
   "name": "@3xpo/create-index",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Creates dark-themed nginx-styled index pages",
   "main": "dist/lib.js",
   "scripts": {
     "dev:build": "nodemon --watch src --ext ts --exec \"ts-node src/index.ts build test\"",
     "dev": "nodemon --watch src --ext ts --exec \"ts-node src/index.ts serve test\"",
-    "build": "tsc"
+    "build": "tsc",
+    "prepublish": "tsc"
   },
   "keywords": [
     "index",
