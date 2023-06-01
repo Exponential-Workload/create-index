@@ -5,6 +5,9 @@
     "target": "ES6",
     "moduleResolution": "nodenext",
     "allowSyntheticDefaultImports": true,
-    "module": "NodeNext"
+    "module": "NodeNext",
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": true
   }
 }
