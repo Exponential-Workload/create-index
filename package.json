@@ -37,5 +37,10 @@
   "optionalDependencies": {
     "boxen": "^7.1.0"
   },
-  "bin": "dist/index.js"
+  "bin": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Exponential-Workload/create-index"
+  },
+  "homepage": "https://github.com/Exponential-Workload/create-index"
 }

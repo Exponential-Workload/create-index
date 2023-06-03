@@ -1,4 +1,4 @@
-![](https://exponential-workload.github.io/create-index/png/readme-banner.png)
+[![](https://exponential-workload.github.io/create-index/png/readme-banner.png)](https://github.com/Exponential-Workload/create-index#readme)
 
 # @3xpo/create-index
 
