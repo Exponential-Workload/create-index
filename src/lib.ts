@@ -14,6 +14,11 @@ import path, { resolve } from 'path';
 import * as json5 from 'json5';
 import sanitize from 'sanitize-html'
 
+export type CreateIndexOptions = {
+  /** @description Disallow .nofiles as it triggers a polynomial regular expression  */
+  disallowNoFiles: boolean;
+}
+
 const sizeRegex = /^(\d+(?:px|r?em|%|vh|vw))+$/
 const colorRegexes = [/^#(0x)?[0-9a-f]+$/i, /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/]
 const SanitizerOptions: sanitize.IOptions = {
@@ -126,7 +131,7 @@ export const findIndexes = (dir: string) => cachedReaddirSync(dir).filter(file =
   return file === 'index.html' ? !fs.readFileSync(`${dir}/${file}`, 'utf-8').includes('<!--!GENERATED_INDEX!-->') : file === 'index.txt' || file === 'index.md' || file === 'index';
 })
 
-export const buildIndex = (dir: string, root: string, templateHTML = template): string | null => {
+export const buildIndex = (dir: string, root: string, templateHTML = template, options?: CreateIndexOptions): string | null => {
   const dirRead = cachedReaddirSync(dir);
   const index = findIndexes(dir);
   if (index.length === 0) {
@@ -237,7 +242,7 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
     else if (existsSync(root + '/social-card.png'))
       template = template.replace('<!--%img%-->', cards(`/social-card.png`))
     else template = template.replace('<!--%img%-->', '')
-    if (existsSync(dir + '/.nofiles'))
+    if (existsSync(dir + '/.nofiles') && !options.disallowNoFiles)
       template = template.replace(/%begin_files%[\s\S]*%end_files%/ui, fs.readFileSync(dir + '/.nofiles', 'utf-8').trim())
     else
       template = template.replace(/%begin_files%|%end_files%/gui, '')
