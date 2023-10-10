@@ -21,16 +21,17 @@ export type CreateIndexOptions = {
 
 const sizeRegex = /^(\d+(?:px|r?em|%|vh|vw))+$/
 const colorRegexes = [/^#(0x)?[0-9a-f]+$/i, /^rgb\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/]
-const SanitizerOptions: sanitize.IOptions = {
+export const SanitizerOptions: sanitize.IOptions = {
   allowedTags: [
-    "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
-    "h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
-    "dl", "dt", "figcaption", "figure", "hr", "li", "main", "ol", "p",
-    "ul", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
-    "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
-    "small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
-    "col", "colgroup", "table", "tbody", "td", "tfoot", "th", "thead", "tr", "a",
+    'address', 'article', 'aside', 'footer', 'header', 'h1', 'h2', 'h3', 'h4',
+    'h5', 'h6', 'hgroup', 'main', 'nav', 'section', 'blockquote', 'dd', 'div',
+    'dl', 'dt', 'figcaption', 'figure', 'hr', 'li', 'main', 'ol', 'p',
+    'ul', 'abbr', 'b', 'bdi', 'bdo', 'br', 'cite', 'code', 'data', 'dfn',
+    'em', 'i', 'kbd', 'mark', 'q', 'rb', 'rp', 'rt', 'rtc', 'ruby', 's', 'samp',
+    'small', 'span', 'strong', 'sub', 'sup', 'time', 'u', 'var', 'wbr', 'caption',
+    'col', 'colgroup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'a',
     'svg', 'path', 'g', 'rect', 'circle', 'line', 'polyline', 'polygon', 'ellipse',
+    'img',
   ],
   disallowedTagsMode: 'recursiveEscape',
   allowedAttributes: {
@@ -44,6 +45,7 @@ const SanitizerOptions: sanitize.IOptions = {
     polyline: ['points', 'fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin', 'stroke-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'opacity'],
     polygon: ['points', 'fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin', 'stroke-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'opacity'],
     ellipse: ['cx', 'cy', 'rx', 'ry', 'fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin', 'stroke-opacity', 'stroke-dasharray', 'stroke-dashoffset', 'opacity'],
+    img: ['src', 'alt', 'width', 'height'],
   },
   allowedStyles: {
     '*': {
@@ -64,9 +66,7 @@ const SanitizerOptions: sanitize.IOptions = {
       'background-color': colorRegexes,
     },
   },
-  // Lots of these won't come up by default because we don't allow them
   selfClosing: ['br', 'hr'],
-  // URL schemes we permit
   allowedSchemes: ['http', 'https'],
   allowedSchemesByTag: {},
   allowedSchemesAppliedToAttributes: ['href', 'src', 'cite'],

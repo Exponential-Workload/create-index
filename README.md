@@ -22,7 +22,7 @@ Unless in [Serve](#serve) mode, it outputs static files! This means anything fro
 
 In [Serve](#serve) mode, it serves a directory instead of generating index files. This is similar to nginx with autoindex on.
 
-> Warning
+> **Warning**
 > We don't implement rate limiting on routes that access the file system, meaning [this can cause a denial of service](https://github.com/Exponential-Workload/create-index/security/code-scanning/2) [if improperly used](https://github.com/Exponential-Workload/create-index/security/code-scanning/1)
 
 ### Dark theme
@@ -46,6 +46,8 @@ If you're surprised as to why your plain text is getting formatted, that's likel
 
 When serving untrusted directories on sensitive domains, it may be worth removing `README.html`'s, `README.txt`s and `README`s (or pass the env var NO_READMES), as they're included (with XSS filtering via `sanitize-html`, may not always be sufficient) in the index.
 
+Additionally, you may want to remove `img` from `lib.SanitizerOptions.allowedTags` if you're serving untrusted directories on sensitive domains.
+
 ### Overwrite Dirreads
 
 Don't want all files to be listed (or, want links to anywhere else)? No problem! Just add a `indexoverwrite.json` (`indexoverwrite.json5` also works) file to the directory, structured similarly to [this](https://github.com/Exponential-Workload/create-index/blob/master/indexoverwrite.json), or [this](https://github.com/Exponential-Workload/create-index/blob/master/test/a/indexoverwrite.json5), or even [this](https://github.com/Exponential-Workload/create-index/blob/master/test/a/d/indexoverwrite.json5)
@@ -64,7 +66,7 @@ Yes, this includes github actions (via [create-index-bin](https://github.com/Exp
 
 It's just a library, so you can use it in your own projects!
 
-[Build](https://index.expo.xyz.ax/dist/) | [NPM](https://npm.im/@3xpo/create-index)
+[Build](https://gh.expo.moe/create-index/dist/) | [NPM](https://npm.im/@3xpo/create-index)
 
 ## Unsure if this is for you?
 
