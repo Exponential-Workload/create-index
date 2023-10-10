@@ -237,6 +237,10 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
     else if (existsSync(root + '/social-card.png'))
       template = template.replace('<!--%img%-->', cards(`/social-card.png`))
     else template = template.replace('<!--%img%-->', '')
+    if (existsSync(dir + '/.nofiles'))
+      template = template.replace(/%begin_files%[\s\S]*%end_files%/gui, fs.readFileSync(dir + '/.nofiles', 'utf-8').trim())
+    else
+      template = template.replace(/%begin_files%|%end_files%/gui, '')
     return template.replace(/%location%/gui, rel.length > 0 ? `${rel}/` : '').replace(/%files%/gui, files.trim())
   } return null
 }
