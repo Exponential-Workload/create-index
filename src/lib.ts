@@ -138,7 +138,7 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
       let last = '';
       while (last !== readme) {
         last = readme;
-        readme = readme.replace(/(javascript):/gui, '$1&colon;');
+        readme = readme.replace(/(javascript|data|vbscript):/gui, '$1&colon;');
       }
       // replace <http://link> -> <a href="http://link">http://link</a>, same for https links
       readme = readme.replace(/<(https?:\/\/[^ >]+)>/gu, '<a href="$1">$1</a>');
@@ -238,7 +238,7 @@ export const buildIndex = (dir: string, root: string, templateHTML = template): 
       template = template.replace('<!--%img%-->', cards(`/social-card.png`))
     else template = template.replace('<!--%img%-->', '')
     if (existsSync(dir + '/.nofiles'))
-      template = template.replace(/%begin_files%[\s\S]*%end_files%/gui, fs.readFileSync(dir + '/.nofiles', 'utf-8').trim())
+      template = template.replace(/%begin_files%[\s\S]*%end_files%/ui, fs.readFileSync(dir + '/.nofiles', 'utf-8').trim())
     else
       template = template.replace(/%begin_files%|%end_files%/gui, '')
     return template.replace(/%location%/gui, rel.length > 0 ? `${rel}/` : '').replace(/%files%/gui, files.trim())
