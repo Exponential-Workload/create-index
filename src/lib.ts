@@ -131,7 +131,13 @@ export const findIndexes = (dir: string) => cachedReaddirSync(dir).filter(file =
   return file === 'index.html' ? !fs.readFileSync(`${dir}/${file}`, 'utf-8').includes('<!--!GENERATED_INDEX!-->') : file === 'index.txt' || file === 'index.md' || file === 'index';
 })
 
-export const buildIndex = (dir: string, root: string, templateHTML = template, options?: CreateIndexOptions): string | null => {
+const defualtOptions: CreateIndexOptions = {
+  disallowNoFiles: false,
+}
+
+export const buildIndex = (dir: string, root: string, templateHTML = template, opt: Partial<CreateIndexOptions> = {}): string | null => {
+  const options = { ...defualtOptions, ...opt };
+
   const dirRead = cachedReaddirSync(dir);
   const index = findIndexes(dir);
   if (index.length === 0) {
