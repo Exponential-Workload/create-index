@@ -18,6 +18,13 @@ why not?
 
 Unless in [Serve](#serve) mode, it outputs static files! This means anything from nginx try_files to github pages is supported!
 
+### Serve Mode
+
+In [Serve](#serve) mode, it serves a directory instead of generating index files. This is similar to nginx with autoindex on.
+
+> Warning
+> We don't implement rate limiting on routes that access the file system, meaning [this can cause a denial of service](https://github.com/Exponential-Workload/create-index/security/code-scanning/2) [if improperly used](https://github.com/Exponential-Workload/create-index/security/code-scanning/1)
+
 ### Dark theme
 
 It's dark themed - No eye pain here!
@@ -51,7 +58,7 @@ Want to serve a static directory instead of generating index files? No problem! 
 
 ...where NodeJS can run.
 
-Yes, this includes github actions (via [create-index-bin](https://github.com/Exponential-Workload/create-index-bin/tree/master) using [create-index-action](https://github.com/Exponential-Workload/create-index-action) if you want fast builds).
+Yes, this includes github actions (via [create-index-bin](https://github.com/Exponential-Workload/create-index-bin/tree/master), or [create-index-action](https://github.com/Exponential-Workload/create-index-action)).
 
 ### It's just a library
 
