@@ -117,13 +117,21 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`,
         const dir = argv.dir as string;
         const port = argv.port as number;
         const app = express();
-        setInterval(() => {
-          clearCache();
-        }, 5000).unref();
+        (
+          setInterval(() => {
+            clearCache();
+          }, 5000) as unknown as {
+            unref(): void;
+          }
+        ).unref?.();
         let indexCache: Record<string, string> = {};
-        setInterval(() => {
-          indexCache = {};
-        }, 1000).unref();
+        (
+          setInterval(() => {
+            indexCache = {};
+          }, 1000) as unknown as {
+            unref(): void;
+          }
+        ).unref?.();
         app.use((_req, res, next) => {
           res.setHeader('X-Powered-By', v);
           next();
@@ -181,7 +189,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`,
               isDiscord
                 ? `<!DOCTYPE html><html><head>${tags}</head></html>`
                 : acceptsHTML
-                  ? `<!-- copyright (c) 2023-2024 Expo -->
+                ? `<!-- copyright (c) 2023-2024 Expo -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -221,7 +229,7 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.`,
 ${box}
 !-->
 `
-                  : `${box}
+                : `${box}
 `,
             );
           }

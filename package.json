@@ -2,45 +2,59 @@
   "name": "@3xpo/create-index",
   "version": "1.3.7",
   "description": "Creates dark-themed nginx-styled index pages",
-  "main": "dist/lib.js",
-  "scripts": {
-    "dev:build": "nodemon --watch src --ext ts --exec \"ts-node src/index.ts build test\"",
-    "dev": "nodemon --watch src --ext ts --exec \"ts-node src/index.ts serve test\"",
-    "build": "tsc",
-    "prepublish": "tsc"
-  },
   "keywords": [
     "index",
     "serve"
   ],
-  "author": "Expo",
-  "license": "MIT",
-  "dependencies": {
-    "express": "^4.18.2",
-    "fs-extra": "^11.1.1",
-    "json5": "^2.2.3",
-    "sanitize-html": "^2.11.0",
-    "yargs": "^17.7.2"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.18",
-    "@types/fs-extra": "^11.0.2",
-    "@types/node": "^20.8.4",
-    "@types/sanitize-html": "^2.9.1",
-    "@types/yargs": "^17.0.28",
-    "nodemon": "^3.0.1",
-    "typescript": "^5.2.2"
-  },
-  "peerDependencies": {
-    "boxen": "^7.1.0"
-  },
-  "optionalDependencies": {
-    "boxen": "^7.1.1"
-  },
-  "bin": "dist/index.js",
+  "homepage": "https://github.com/Exponential-Workload/create-index",
   "repository": {
     "type": "git",
     "url": "https://github.com/Exponential-Workload/create-index"
   },
-  "homepage": "https://github.com/Exponential-Workload/create-index"
+  "license": "MIT",
+  "author": "Expo",
+  "main": "dist/lib.js",
+  "module": "dist/lib.mjs",
+  "bin": "dist/index.js",
+  "types": "dist/lib.d.ts",
+  "typings": "dist/lib.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/lib.d.ts",
+      "import": "./dist/lib.mjs",
+      "require": "./dist/lib.js",
+      "default": "./dist/lib.js"
+    }
+  },
+  "scripts": {
+    "dev:build": "nodemon --watch src --ext ts --exec \"ts-node src/index.ts build test\"",
+    "dev": "nodemon --watch src --ext ts --exec \"ts-node src/index.ts serve test\"",
+    "build": "concurrently \"tsc --emitDeclarationOnly\" \"npm:build:esb:*\" && node postbuild.mjs",
+    "build:esb:es": "for f in src/*.ts; do esbuild $f --bundle --minify --packages=external --sourcemap --platform=node --outfile=dist/$(basename $f .ts).mjs --format=esm; done",
+    "build:esb:cjs": "for f in src/*.ts; do esbuild $f --bundle --minify --packages=external --sourcemap --platform=node --outfile=dist/$(basename $f .ts).cjs --format=cjs; done",
+    "prepublish": "npm run build"
+  },
+  "dependencies": {
+    "express": "^4.19.1",
+    "fs-extra": "^11.2.0",
+    "json5": "^2.2.3",
+    "sanitize-html": "^2.13.0",
+    "yargs": "^17.7.2"
+  },
+  "peerDependencies": {
+    "boxen": "^7.1.0"
+  },
+  "devDependencies": {
+    "@3xpo/pkgmetatool": "^0.1.6",
+    "@types/express": "^4.17.21",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.11.30",
+    "@types/sanitize-html": "^2.11.0",
+    "@types/yargs": "^17.0.32",
+    "nodemon": "^3.1.0",
+    "typescript": "^5.4.3"
+  },
+  "optionalDependencies": {
+    "boxen": "^7.1.1"
+  }
 }
