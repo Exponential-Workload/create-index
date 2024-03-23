@@ -2,9 +2,9 @@
 // This is a JSON5 file, which is a superset of JSON that allows comments, trailing commas, etc...
 // Anyways, this file overwrites the generated index with a custom one
 {
-  "Index Overwrite File": "indexoverwrite.json5",
-  "b": "b/",
-  "This path does not exist/": "pathdoesnotexist",
-  "This path does not exist either": "pathdoesnotexist",
-  "This path is actually b/": "b",
+  'Index Overwrite File': 'indexoverwrite.json5',
+  b: 'b/',
+  'This path does not exist/': 'pathdoesnotexist',
+  'This path does not exist either': 'pathdoesnotexist',
+  'This path is actually b/': 'b',
 }
